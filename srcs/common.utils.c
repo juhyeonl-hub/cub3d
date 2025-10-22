@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   common.utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 12:24:51 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/10/22 14:45:54 by juhyeonl         ###   ########.fr       */
+/*   Created: 2025/10/22 14:42:05 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/10/22 14:42:46 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "cub3d.h"
 
-int	main(int ac, char **av)
+int	ft_perror(char *msg)
 {
-	if (ac != 2)
-		return (ft_error("Arguments wrong(usage: ./cub3d <map>)"));
-	if (parse_map(av))
-		return (exit_game());
-	return (0);
+	perror(msg);
+	return (1);
 }
