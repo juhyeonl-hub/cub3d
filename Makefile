@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 12:15:10 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/10/22 13:38:01 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/11/02 20:55:47 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ MLX_URL = git@github.com:codam-coding-college/MLX42.git
 MLX_BUILD_DIR = $(MLX_DIR)/build
 MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
 
-INCLUDES = -I$(INCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include
+INCLUDES = -I$(INCS_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)/include
 LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42 -ldl -lglfw -lpthread -lm
 
 SRCS = $(shell find $(SRCS_DIR) -name "*.c")

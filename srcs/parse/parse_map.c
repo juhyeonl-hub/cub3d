@@ -1,43 +1,35 @@
 /* ************************************************************************** */
-/* */
-/* :::      ::::::::   */
-/* parse_map.c                                        :+:      :+:    :+:   */
-/* +:+ +:+         +:+     */
-/* By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
-/* +#+#+#+#+#+   +#+           */
-/* Created: 2025/10/22 14:16:10 by juhyeonl          #+#    #+#             */
-/* Updated: 2025/10/22 15:00:00 by juhyeonl         ###   ########.fr       */
-/* */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/25 18:45:29 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/10/25 18:45:33 by juhyeonl         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <fcntl.h>
 #include <unistd.h>
 
-// --- 보조 함수들 ---
-
-// config 구조체를 0으로 초기화하는 함수
 static void init_config(t_config *config)
 {
     ft_memset(config, 0, sizeof(t_config));
 }
 
-// 색상 문자열(R,G,B)을 파싱하여 int로 변환하는 함수
 static int parse_color(char *line, int *color_out)
 {
     char    **rgb_str;
     int     rgb[3];
     
-    // ft_split 같은 함수로 쉼표(,)를 기준으로 나눔
     rgb_str = ft_split(line, ',');
     if (!rgb_str || !rgb_str[0] || !rgb_str[1] || !rgb_str[2] || rgb_str[3])
-    {
-        // ft_free_split(rgb_str);
         return (1);
-    }
-    rgb[0] = ft_atoi(rgb_str[0]); // R
-    rgb[1] = ft_atoi(rgb_str[1]); // G
-    rgb[2] = ft_atoi(rgb_str[2]); // B
+    rgb[0] = ft_atoi(rgb_str[0]);
+    rgb[1] = ft_atoi(rgb_str[1]);
+    rgb[2] = ft_atoi(rgb_str[2]);
     // ft_free_split(rgb_str);
 
     if (rgb[0] < 0 || rgb[0] > 255 || rgb[1] < 0 || rgb[1] > 255 || \
