@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 12:15:10 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/11/02 20:55:47 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/11/03 13:15:07 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,16 +31,19 @@ MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
 INCLUDES = -I$(INCS_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)/include
 LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42 -ldl -lglfw -lpthread -lm
 
-SRCS = $(shell find $(SRCS_DIR) -name "*.c")
-OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
-VPATH = $(sort $(dir $(SRCS)))
+SRCS_FILES = $(shell find $(SRCS_DIR)/main -name "*.c") \
+             $(shell find $(SRCS_DIR)/common -name "*.c") \
+             $(shell find $(SRCS_DIR)/parse -name "*.c") \
+             # $(shell find $(SRCS_DIR)/render -name "*.c") # for rander
 
-.PHONY: all clean fclean re
+OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS_FILES:.c=.o)))
+VPATH = $(sort $(dir $(SRCS_FILES)))
+
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(INCLUDES)
 	@echo "✅ cub3d compiled successfully!"
 
 $(LIBFT_LIB):
@@ -74,9 +77,10 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "✅ Executable and library objects removed."
 	@echo "🧹 Removing cloned repositories..."
 	@if [ -d "$(LIBFT_DIR)" ]; then $(RM) -r $(LIBFT_DIR); fi
 	@if [ -d "$(MLX_DIR)" ]; then $(RM) -r $(MLX_DIR); fi
+	@echo "✅ Executable and cloned libraries removed."
 
 re: fclean all
+.PHONY: all clean fclean re bonus

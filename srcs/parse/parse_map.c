@@ -1,131 +1,112 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/25 18:45:29 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/10/25 18:45:33 by juhyeonl         ###   ########.fr       */
-/*                                                                            */
+/* */
+/* :::      ::::::::   */
+/* parse_map.c                                        :+:      :+:    :+:   */
+/* +:+ +:+         +:+     */
+/* By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/* 2단계(Pass 2): 맵 그리드를 t_list를 거쳐 char**로 파싱합니다. */
+/* Updated: 2025/11/02 21:55:00 by juhyeonl         ###   ########.fr       */
+/* */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <fcntl.h>
-#include <unistd.h>
 
-static void init_config(t_config *config)
+// 헬퍼 함수 프로토타입
+static char	**list_to_map_grid(t_list *head, t_map_config *config);
+static char	*ft_strdup_no_newline(const char *s);
+void		free_split(char **split_arr); // parse_utils.c에서 가져옴
+
+/*
+ * 맵의 첫 줄(first_map_line)과 GNL(fd)을 사용하여
+ * 맵 전체를 읽고 t_list에 저장한 뒤, char**로 변환합니다.
+ */
+int	parse_map_grid(int fd, char *first_map_line, t_game *game)
 {
-    ft_memset(config, 0, sizeof(t_config));
+	t_list	*head;
+	char	*line;
+
+	head = ft_lstnew(ft_strdup_no_newline(first_map_line));
+	free(first_map_line); // GNL에서 받은 원본 라인 해제
+	if (!head)
+		return (ft_perror("Error: Malloc failed\n"));
+
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (line == NULL) // 파일 끝
+			break ;
+		
+		// PDF 규칙: 맵은 파일의 마지막이어야 함.
+		// 맵 중간에 빈 줄이 있는 경우(error2.cub)도 맵의 일부로 간주
+		// (추후 validate_config에서 빈 줄을 오류 처리할 수 있음)
+		ft_lstadd_back(&head, ft_lstnew(ft_strdup_no_newline(line)));
+		free(line);
+	}
+
+	// t_list를 char**로 변환하여 config에 저장
+	game->config.map_grid = list_to_map_grid(head, &game->config);
+	ft_lstclear(&head, free); // 리스트와 내부 문자열 모두 해제
+
+	if (!game->config.map_grid)
+		return (ft_perror("Error: Failed to allocate map grid\n"));
+	
+	return (0);
 }
 
-static int parse_color(char *line, int *color_out)
+/*
+ * GNL에서 읽을 때 \n이 포함될 수 있으므로, \n을 제외하고 복제합니다.
+ */
+static char	*ft_strdup_no_newline(const char *s)
 {
-    char    **rgb_str;
-    int     rgb[3];
-    
-    rgb_str = ft_split(line, ',');
-    if (!rgb_str || !rgb_str[0] || !rgb_str[1] || !rgb_str[2] || rgb_str[3])
-        return (1);
-    rgb[0] = ft_atoi(rgb_str[0]);
-    rgb[1] = ft_atoi(rgb_str[1]);
-    rgb[2] = ft_atoi(rgb_str[2]);
-    // ft_free_split(rgb_str);
+	char	*new_str;
+	size_t	len;
 
-    if (rgb[0] < 0 || rgb[0] > 255 || rgb[1] < 0 || rgb[1] > 255 || \
-        rgb[2] < 0 || rgb[2] > 255)
-        return (1);
-    
-    // R, G, B 값을 하나의 int로 합침 (비트 연산)
-    *color_out = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
-    return (0);
+	len = ft_strlen(s);
+	if (len > 0 && s[len - 1] == '\n')
+		len--;
+	
+	new_str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_str)
+		return (NULL);
+	ft_memcpy(new_str, s, len);
+	new_str[len] = '\0';
+	return (new_str);
 }
 
-// 텍스처와 색상 정보를 파싱하는 함수
-static int parse_element(char *line, t_config *config)
+/*
+ * t_list를 char** 2차원 배열로 변환합니다.
+ * 이 과정에서 map_height와 map_width를 계산하여 config에 저장합니다.
+ */
+static char	**list_to_map_grid(t_list *head, t_map_config *config)
 {
-    char **parts;
+	char	**map;
+	t_list	*current;
+	int		i;
+	size_t	max_width;
 
-    parts = ft_split(line, ' '); // 공백을 기준으로 식별자와 값 분리
-    if (!parts || !parts[0] || !parts[1] || parts[2])
-    {
-        // ft_free_split(parts);
-        return (ft_perror("Error: Invalid element format\n"));
-    }
-    if (ft_strncmp(parts[0], "NO", 3) == 0)
-        config->north_path = ft_strdup(parts[1]);
-    else if (ft_strncmp(parts[0], "SO", 3) == 0)
-        config->south_path = ft_strdup(parts[1]);
-    else if (ft_strncmp(parts[0], "WE", 3) == 0)
-        config->west_path = ft_strdup(parts[1]);
-    else if (ft_strncmp(parts[0], "EA", 3) == 0)
-        config->east_path = ft_strdup(parts[1]);
-    else if (ft_strncmp(parts[0], "F", 2) == 0)
-    {
-        if (parse_color(parts[1], &config->floor_color))
-            return (ft_perror("Error: Invalid floor color\n"));
-    }
-    else if (ft_strncmp(parts[0], "C", 2) == 0)
-    {
-        if (parse_color(parts[1], &config->ceiling_color))
-            return (ft_perror("Error: Invalid ceiling color\n"));
-    }
-    // ft_free_split(parts);
-    return (0);
-}
+	config->map_height = ft_lstsize(head);
+	if (config->map_height == 0)
+		return (NULL);
+	
+	map = (char **)malloc(sizeof(char *) * (config->map_height + 1));
+	if (!map)
+		return (NULL);
 
-// --- 메인 파싱 함수 ---
-
-int parse_map(char **av, t_game *game)
-{
-    int     fd;
-    char    *line;
-
-    // 1. 맵 유효성 검사 (확장자, 문자, 벽 등)
-    //    성공하면 game->config.map에 맵 데이터가 할당됨
-    if (map_val(av, &game->config.map))
-        return (1);
-    
-    init_config(&game->config); // game->config 구조체 초기화
-
-    // 2. 텍스처와 색상 정보 파싱
-    fd = open(av[1], O_RDONLY);
-    if (fd < 0)
-        return (ft_perror("Error: Cannot open map file\n"));
-    
-    line = get_next_line(fd);
-    while (line)
-    {
-        // 빈 줄은 건너뜀
-        if (*line == '\n')
-        {
-            free(line);
-            line = get_next_line(fd);
-            continue;
-        }
-        // 맵 라인이 시작되면 파싱 중단 (맵은 항상 마지막에 와야 함)
-        if (ft_strchr(line, '1') || ft_strchr(line, '0'))
-        {
-            free(line);
-            break;
-        }
-        if (parse_element(line, &game->config))
-        {
-            free(line);
-            close(fd);
-            return (1); // 파싱 중 오류 발생
-        }
-        free(line);
-        line = get_next_line(fd);
-    }
-    close(fd);
-
-    // 3. 모든 필수 요소가 파싱되었는지 확인 (구현 필요)
-    // if (!config->north_path || ... || !config->floor_color)
-    //     return (ft_perror("Error: Missing map elements\n"));
-
-    // 4. 플레이어 위치 찾고 맵에서 '0'으로 변경 (구현 필요)
-    // find_player_position(&game->config);
-
-    return (0); // 파싱 성공
+	i = 0;
+	max_width = 0;
+	current = head;
+	while (current)
+	{
+		map[i] = (char *)current->content; // content의 소유권을 map으로 이전
+		current->content = NULL; // 리스트 해제 시 content가 free되는 것을 방지
+		
+		if (ft_strlen(map[i]) > max_width)
+			max_width = ft_strlen(map[i]);
+		
+		current = current->next;
+		i++;
+	}
+	map[i] = NULL; // 2차원 배열의 끝
+	config->map_width = (int)max_width;
+	return (map);
 }
