@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 12:15:10 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/11/03 13:21:11 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/11/04 21:18:24 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 # --- 라이브러리: MLX42 ---
 MLX_DIR = MLX42
-MLX_URL = git@github.com:codam-coding-college/MLX42.git
+MLX_URL = https://github.com/codam-coding-college/MLX42.git
 MLX_BUILD_DIR = $(MLX_DIR)/build
 MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
 
@@ -64,7 +64,7 @@ $(MLX_LIB):
 		git clone --quiet $(MLX_URL) $(MLX_DIR); \
 	fi
 	@echo "Building MLX42..."
-	@cmake -S $(MLX_DIR) -B $(MLX_BUILD_DIR) > /dev/null 2>&1
+	@cmake -S $(MLX_DIR) -B $(MLX_BUILD_DIR)
 	@$(MAKE) --no-print-directory --quiet -C $(MLX_BUILD_DIR) -j4
 
 # --- 오브젝트 파일 빌드 규칙 ---
