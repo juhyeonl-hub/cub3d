@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:23:54 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/05 08:42:41 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/05 09:39:53 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	parse(char *filename, t_game *game)
 		return (ft_perror("Error: Cannot open file\n"));
 	init_config(&game->config);
 	first_map_line = parse_elements(fd, game);
-	printf("%s\n", first_map_line);
 	if (!first_map_line)
 	{
 		close(fd);

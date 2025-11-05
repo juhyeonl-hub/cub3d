@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 23:06:44 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/03 13:55:42 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/05 09:37:41 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,7 @@ int		ft_perror(char *msg);
 void	free_game_config(t_map_config *config);
 void	free_split(char **split_arr);
 
+/* ------------debug----------- */
+void	debug_print_game_struct(t_game *game);
 
 #endif

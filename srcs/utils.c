@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 12:59:38 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/03 13:55:15 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/05 09:40:56 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ int	ft_perror(char *msg)
 	return (1);
 }
 
-/*
- * config 구조체에 할당된 메모리를 해제합니다.
- */
 void	free_game_config(t_map_config *config)
 {
 	int	i;
@@ -35,7 +32,7 @@ void	free_game_config(t_map_config *config)
 		i++;
 	}
 	if (config->map_grid)
-		free_split(config->map_grid); // 2차원 배열 해제 유틸 필요
+		free_split(config->map_grid);
 }
 
 void	free_split(char **split_arr)
