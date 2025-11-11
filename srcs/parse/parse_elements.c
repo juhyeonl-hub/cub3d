@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:58:34 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/03 15:50:04 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/05 09:31:33 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,17 @@ char	*parse_elements(int fd, t_game *game)
 	char	*line;
 	char	**parts;
 	int		parse_result;
+	int		i;
 
 	while (1)
 	{
+		i = 0;
 		line = get_next_line(fd);
 		if (line == NULL)
 			return (NULL);
-		if (*line == '\n' || *line == '\0')
+		while (line[i] == ' ' || line[i] == '\t')
+			i++;
+		if (line[i] == '\n' || line[i] == '\0')
 		{
 			free(line);
 			continue ;

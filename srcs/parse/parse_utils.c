@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:54:47 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/03 13:58:20 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:38:39 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int	is_map_line(char *line)
 {
-	while (*line)
-	{
-		if (*line == '1' || *line == '0' || *line == ' ')
-			return (1);
-		line++;
-	}
+	int	i;
+
+	i = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	if (line[i] == '1' || line[i] == '0')
+		return (1);
 	return (0);
 }
