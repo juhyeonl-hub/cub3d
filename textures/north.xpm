@@ -1,11 +1,39 @@
 /* XPM */
-"8 8 1 1"
-"R c #FF0000"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
-"RRRRRRRR"
+static char * north_xpm[] = {
+"32 32 2 1",
+"  c None",
+"X c #000000",
+"                                ",
+"                                ",
+"                                ",
+"      XXXX            XXXX      ",
+"      XXXX            XXXX      ",
+"      XXXX            XXXX      ",
+"      XXXX            XXXX      ",
+"      XXXX            XXXX      ",
+"      XXXXXXXXXXXXXXXXXX        ",
+"      XXXXXXXXXXXXXXXXXX        ",
+"      XXXX            XXXX      ",
+"      XXXX            XXXX      ",
+"              XXXX              ",
+"              XXXX              ",
+"              XXXX              ",
+"              XXXX              ",
+"      XXXXXX    XXXXXXXXXXXX    ",
+"      XXXXXX    XXXXXXXXXXXX    ",
+"      XXXX      XXXX            ",
+"      XXXX      XXXX            ",
+"      XXXX      XXXX            ",
+"      XXXX      XXXX            ",
+"      XXXX      XXXX            ",
+"      XXXXXX    XXXXXXXXXXXX    ",
+"      XXXXXX    XXXXXXXXXXXX    ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                "
+};
