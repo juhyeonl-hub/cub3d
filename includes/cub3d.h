@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <math.h>
-# include "../libft/includes/libft.h"
+# include "libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
 // Window Size
@@ -64,7 +64,8 @@ typedef struct	s_ray {
 	t_vector	dir;			// 레이의 방향 벡터 (ray.dir.x, ray.dir.y)
 	t_vector	side_dist;		// 다음 면까지의 거리
 	t_vector	delta_dist;		// x, y면 사이의 거리
-	t_vector	step;			// x, y 방향 스텝 (+1 또는 -1)
+	int			step_x;	// x, y 방향 스텝 (+1 또는 -1)
+	int			step_y;
 	int			map_x;			// 레이의 현재 맵 x 인덱스
 	int			map_y;			// 레이의 현재 맵 y 인덱스
 	double		perp_wall_dist; // 수직 거리
@@ -113,6 +114,7 @@ int	is_map_line(char *line);
 /* -----------raycast----------- */
 void	init_ray_data(t_ray *ray);
 void	init_player_state(t_player *player, t_map_config *config);
+void	raycasting(t_game *game);
 
 /* ------------common----------- */
 int		ft_perror(char *msg);

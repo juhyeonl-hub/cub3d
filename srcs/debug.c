@@ -65,7 +65,8 @@ static void	debug_print_ray(t_ray *ray)
 	debug_print_vector("방향 (dir)", ray->dir);
 	debug_print_vector("Side Dist", ray->side_dist);
 	debug_print_vector("Delta Dist", ray->delta_dist);
-	debug_print_vector("Step", ray->step);
+	printf("      Step      : (step_x=%d, step_y=%d)\n", \
+				ray->step_x, ray->step_y);
 	printf("      Map Coords      : (map_x=%d, map_y=%d)\n", \
 				ray->map_x, ray->map_y);
 	printf("      Perp Wall Dist  : %.3f\n", ray->perp_wall_dist);

@@ -33,7 +33,8 @@ MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
 
 # --- 인클루드 및 라이브러리 플래그 ---
 INCLUDES = -I$(INCS_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)/include
-LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42 -ldl -lglfw -lpthread -lm
+# --- *** FIX: Added -lXpm to force linking *** ---
+LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42 -ldl -lglfw -lpthread -lm -lXpm
 
 # --- 소스 파일 ---
 SRCS_FILES = $(shell find $(SRCS_DIR) -name "*.c")
@@ -55,23 +56,31 @@ $(LIBFT_LIB):
 		echo "Downloading libft..."; \
 		git clone --quiet $(LIBFT_URL) $(LIBFT_DIR); \
 	fi
-	@echo "Building libft..."
-	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
+	@if [ ! -f "$(LIBFT_LIB)" ]; then \
+		echo "Building libft..."; \
+		$(MAKE) --no-print-directory -C $(LIBFT_DIR); \
+	else \
+		@echo "libft is already built."; \
+	fi
 
 $(MLX_LIB):
 	@if [ ! -d "$(MLX_DIR)" ]; then \
 		echo "Downloading MLX42..."; \
 		git clone --quiet $(MLX_URL) $(MLX_DIR); \
 	fi
-	@echo "Building MLX42..."
-	@cmake -S $(MLX_DIR) -B $(MLX_BUILD_DIR) > /dev/null 2>&1
-	@$(MAKE) --no-print-directory --quiet -C $(MLX_BUILD_DIR) -j4
+	@if [ ! -f "$(MLX_LIB)" ]; then \
+		echo "Building MLX42..."; \
+		cmake -S $(MLX_DIR) -B $(MLX_BUILD_DIR); \
+		$(MAKE) --no-print-directory --quiet -C $(MLX_BUILD_DIR) -j4; \
+	else \
+		@echo "MLX42 is already built."; \
+	fi
 
 # --- 오브젝트 파일 빌드 규칙 ---
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-$(OBJS_DIR)/%.o: %.c | $(OBJS_DIR) $(LIBFT_LIB) $(MLX_LIB)
+$(OBJS_DIR)/%.o: %.c $(LIBFT_LIB) $(MLX_LIB) | $(OBJS_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # --- 정리 규칙 (수정됨) ---

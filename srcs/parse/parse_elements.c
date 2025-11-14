@@ -67,7 +67,8 @@ int	parse_texture(char **parts, t_game *game)
 		idx = EAST;
 	if (game->config.tex_paths[idx] != NULL)
 		return (ft_perror("Error: Duplicate texture definition\n"));
-	game->config.tex_paths[idx] = ft_strdup(parts[1]);
+	// game->config.tex_paths[idx] = ft_strdup(parts[1]);
+	game->config.tex_paths[idx] = ft_strtrim(parts[1], " \t\n");
 	if (!game->config.tex_paths[idx])
 		return (ft_perror("Error: Malloc failed\n"));
 	return (0);
