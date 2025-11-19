@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyunjkim <hyunjkim@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/19 15:28:21 by hyunjkim          #+#    #+#             */
+/*   Updated: 2025/11/19 15:28:23 by hyunjkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static int	get_texture_color(mlx_texture_t *texture, int x, int y)
 {
-	int index;
-	int r;
-	int g;
-	int b;
-	int a;
+	int	index;
+	int	r;
+	int	g;
+	int	b;
+	int	a;
 
 	if (x < 0 || x >= (int)texture->width || y < 0 || y >= (int)texture->height)
-        	return (0xFF000000);
+		return (0xFF000000);
 	index = (y * texture->width + x) * texture->bytes_per_pixel;
 	r = texture->pixels[index];
 	g = texture->pixels[index + 1];
@@ -20,11 +32,11 @@ static int	get_texture_color(mlx_texture_t *texture, int x, int y)
 
 void	draw_textured_walls(t_game *game, int x, int draw_start, int draw_end)
 {
-	int	y;
-	int	color;
-	int	line_height;
-	double	step;
-	double	tex_pos;
+	int				y;
+	int				color;
+	int				line_height;
+	double			step;
+	double			tex_pos;
 	mlx_texture_t	*texture;
 
 	if (game->ray.side == 0)

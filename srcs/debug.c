@@ -28,13 +28,13 @@ static void	debug_print_map_config(t_map_config *config)
 	printf("      WE: %s\n", config->tex_paths[WEST]);
 	printf("      EA: %s\n", config->tex_paths[EAST]);
 	printf("    --- 색상 (int / hex) ---\n");
-	printf("      Floor (F)  : %-10d (0x%X)\n", \
-				config->floor_color, config->floor_color);
-	printf("      Ceiling (C): %-10d (0x%X)\n", \
-				config->ceiling_color, config->ceiling_color);
+	printf("      Floor (F)  : %-10d (0x%X)\n", config->floor_color,
+		config->floor_color);
+	printf("      Ceiling (C): %-10d (0x%X)\n", config->ceiling_color,
+		config->ceiling_color);
 	printf("    --- 맵 정보 ---\n");
-	printf("      맵 크기   : (width=%d, height=%d)\n", \
-				config->map_width, config->map_height);
+	printf("      맵 크기   : (width=%d, height=%d)\n", config->map_width,
+		config->map_height);
 	printf("      시작 방향 : %c\n", config->start_dir);
 	debug_print_vector("시작 위치 (start_pos)", config->start_pos);
 	printf("    --- 맵 그리드 (map_grid: %p) ---\n", (void *)config->map_grid);
@@ -65,14 +65,14 @@ static void	debug_print_ray(t_ray *ray)
 	debug_print_vector("방향 (dir)", ray->dir);
 	debug_print_vector("Side Dist", ray->side_dist);
 	debug_print_vector("Delta Dist", ray->delta_dist);
-	printf("      Step      : (step_x=%d, step_y=%d)\n", \
-				ray->step_x, ray->step_y);
-	printf("      Map Coords      : (map_x=%d, map_y=%d)\n", \
-				ray->map_x, ray->map_y);
+	printf("      Step      : (step_x=%d, step_y=%d)\n", ray->step_x,
+		ray->step_y);
+	printf("      Map Coords      : (map_x=%d, map_y=%d)\n", ray->map_x,
+		ray->map_y);
 	printf("      Perp Wall Dist  : %.3f\n", ray->perp_wall_dist);
 	printf("      Hit / Side      : (hit=%d, side=%d)\n", ray->hit, ray->side);
-	printf("      Texture Coords  : (tex_x=%d, tex_y=%d)\n", \
-				ray->tex_x, ray->tex_y);
+	printf("      Texture Coords  : (tex_x=%d, tex_y=%d)\n", ray->tex_x,
+		ray->tex_y);
 }
 
 void	debug_print_game_struct(t_game *game)
@@ -92,8 +92,8 @@ void	debug_print_game_struct(t_game *game)
 	printf("    텍스처[WE]     : %p\n", (void *)game->textures[WEST]);
 	printf("    텍스처[EA]     : %p\n", (void *)game->textures[EAST]);
 	printf("    --- 키 상태 ---\n");
-	printf("      W: %d, A: %d, S: %d, D: %d\n", \
-				game->key_w, game->key_a, game->key_s, game->key_d);
+	printf("      W: %d, A: %d, S: %d, D: %d\n", game->key_w, game->key_a,
+		game->key_s, game->key_d);
 	printf("      L: %d, R: %d\n", game->key_left, game->key_right);
 	printf("    --- 기타 ---\n");
 	printf("      미니맵 활성화  : %d\n", game->minimap_enabled);

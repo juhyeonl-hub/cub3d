@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyunjkim <hyunjkim@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/19 15:28:44 by hyunjkim          #+#    #+#             */
+/*   Updated: 2025/11/19 15:28:45 by hyunjkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	setup_ray(t_ray *ray, t_player *player, int x)
@@ -26,7 +38,8 @@ static void	setup_ray(t_ray *ray, t_player *player, int x)
 	else
 	{
 		ray->step_x = 1;
-		ray->side_dist.x = (ray->map_x + 1.0 - player->pos.x) * ray->delta_dist.x;
+		ray->side_dist.x = (ray->map_x + 1.0 - player->pos.x)
+			* ray->delta_dist.x;
 	}
 	if (ray->dir.y < 0)
 	{
@@ -36,7 +49,8 @@ static void	setup_ray(t_ray *ray, t_player *player, int x)
 	else
 	{
 		ray->step_y = 1;
-		ray->side_dist.y = (ray->map_y + 1.0 - player->pos.y) * ray->delta_dist.y;
+		ray->side_dist.y = (ray->map_y + 1.0 - player->pos.y)
+			* ray->delta_dist.y;
 	}
 }
 
@@ -56,12 +70,12 @@ static void	run_dda(t_ray *ray, t_map_config *config)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (ray->map_y < 0 || ray->map_y >= config->map_height ||
-            	ray->map_x < 0 || ray->map_x >= (int)ft_strlen(config->map_grid[ray->map_y]))
-        	{
-          		ray->hit = 1;
-            		break ;
-       		}
+		if (ray->map_y < 0 || ray->map_y >= config->map_height || ray->map_x < 0
+			|| ray->map_x >= (int)ft_strlen(config->map_grid[ray->map_y]))
+		{
+			ray->hit = 1;
+			break ;
+		}
 		if (config->map_grid[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
 	}
@@ -71,18 +85,20 @@ static void	get_wall_dist(t_ray *ray, t_player *player)
 {
 	if (ray->side == 0)
 	{
-		ray->perp_wall_dist = (ray->map_x - player->pos.x + (1 - ray->step_x) / 2) / ray->dir.x;
+		ray->perp_wall_dist = (ray->map_x - player->pos.x + (1 - ray->step_x)
+				/ 2) / ray->dir.x;
 	}
 	else
 	{
-		ray->perp_wall_dist = (ray->map_y - player->pos.y + (1 - ray->step_y) / 2) / ray->dir.y;
+		ray->perp_wall_dist = (ray->map_y - player->pos.y + (1 - ray->step_y)
+				/ 2) / ray->dir.y;
 	}
 }
 
 static void	get_texture_x(t_game *game, t_ray *ray, t_player *player)
 {
 	double	x_wall;
-	int	tex_width;
+	int		tex_width;
 
 	tex_width = game->textures[NORTH]->width;
 	if (ray->side == 0)
@@ -94,7 +110,7 @@ static void	get_texture_x(t_game *game, t_ray *ray, t_player *player)
 	if (ray->side == 0 && ray->dir.x > 0)
 		ray->tex_x = tex_width - ray->tex_x - 1;
 	if (ray->side == 1 && ray->dir.y < 0)
-		ray->tex_x = tex_width - ray->tex_x -1;
+		ray->tex_x = tex_width - ray->tex_x - 1;
 }
 
 void	raycasting(t_game *game)
@@ -123,4 +139,3 @@ void	raycasting(t_game *game)
 	}
 	mlx_image_to_window(game->mlx_ptr, game->screen_buffer, 0, 0);
 }
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyunjkim <hyunjkim@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/19 15:28:51 by hyunjkim          #+#    #+#             */
+/*   Updated: 2025/11/19 15:28:54 by hyunjkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	init_ray_data(t_ray *ray)
@@ -33,9 +45,9 @@ void	init_player_state(t_player *player, t_map_config *config)
 	else if (config->start_dir == 'W')
 	{
 		player->dir.x = -1;
-        	player->dir.y = 0;
-       		player->plane.x = 0;
-        	player->plane.y = -0.66;
+		player->dir.y = 0;
+		player->plane.x = 0;
+		player->plane.y = -0.66;
 	}
 	else if (config->start_dir == 'S')
 	{
