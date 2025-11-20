@@ -30,6 +30,48 @@ static int	get_texture_color(mlx_texture_t *texture, int x, int y)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
+static mlx_texture_t	*select_wall_texture(t_game *game)
+{
+	if (game->ray.side == 0)
+	{
+		if (game->ray.dir.x > 0)
+			return (game->textures[EAST]);
+		else
+			return (game->textures[WEST]);
+	}
+	else
+	{
+		if (game->ray.dir.y > 0)
+			return (game->textures[SOUTH]);
+		else
+			return (game->textures[NORTH]);
+	}
+}
+
+static void	draw_ceiling(t_game *game, int x, int draw_start)
+{
+	int	y;
+
+	y = 0;
+	while (y < draw_start)
+	{
+		mlx_put_pixel(game->screen_buffer, x, y, game->config.ceiling_color);
+		y++;
+	}
+}
+
+static void	draw_floor(t_game *game, int x, int draw_end)
+{
+	int	y;
+
+	y = draw_end;
+	while (y < WIN_HEIGHT)
+	{
+		mlx_put_pixel(game->screen_buffer, x, y, game->config.floor_color);
+		y++;
+	}
+}
+
 void	draw_textured_walls(t_game *game, int x, int draw_start, int draw_end)
 {
 	int				y;
@@ -39,29 +81,12 @@ void	draw_textured_walls(t_game *game, int x, int draw_start, int draw_end)
 	double			tex_pos;
 	mlx_texture_t	*texture;
 
-	if (game->ray.side == 0)
-	{
-		if (game->ray.dir.x > 0)
-			texture = game->textures[EAST];
-		else
-			texture = game->textures[WEST];
-	}
-	else
-	{
-		if (game->ray.dir.y > 0)
-			texture = game->textures[SOUTH];
-		else
-			texture = game->textures[NORTH];
-	}
+	texture = select_wall_texture(game);
 	line_height = draw_end - draw_start;
 	step = (double)texture->height / (double)line_height;
 	tex_pos = (draw_start - WIN_HEIGHT / 2 + line_height / 2) * step;
-	y = 0;
-	while (y < draw_start)
-	{
-		mlx_put_pixel(game->screen_buffer, x, y, game->config.ceiling_color);
-		y++;
-	}
+	draw_ceiling(game, x, draw_start);
+	y = draw_start;
 	while (y < draw_end)
 	{
 		game->ray.tex_y = (int)tex_pos % texture->height;
@@ -70,9 +95,5 @@ void	draw_textured_walls(t_game *game, int x, int draw_start, int draw_end)
 		mlx_put_pixel(game->screen_buffer, x, y, color);
 		y++;
 	}
-	while (y < WIN_HEIGHT)
-	{
-		mlx_put_pixel(game->screen_buffer, x, y, game->config.floor_color);
-		y++;
-	}
+	draw_floor(game, x, draw_end);
 }

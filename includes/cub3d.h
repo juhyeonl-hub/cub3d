@@ -126,6 +126,8 @@ void				draw_textured_walls(t_game *game, int x, int draw_start,
 void				raycasting(t_game *game);
 void				player_movement(t_game *game, double frame_time);
 void				game_loop(void *param);
+void				rotate_view(t_game *game, double rotation_speed, int dir);
+void				setup_ray(t_ray *ray, t_player *player, int x);		
 
 /* ------------common----------- */
 int					ft_perror(char *msg);
