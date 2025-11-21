@@ -92,7 +92,7 @@ void	raycasting(t_game *game)
 		if (draw_end >= WIN_HEIGHT)
 			draw_end = WIN_HEIGHT - 1;
 		get_texture_x(game, &game->ray, &game->player);
-		draw_textured_walls(game, x, draw_start, draw_end);
+		draw_all(game, x, draw_start, draw_end);
 		x++;
 	}
 	mlx_image_to_window(game->mlx_ptr, game->screen_buffer, 0, 0);

@@ -87,12 +87,6 @@ typedef struct s_game
 	t_ray			ray;
 	mlx_texture_t	*textures[4];
 	mlx_image_t		*screen_buffer;
-	int				key_w;
-	int				key_a;
-	int				key_s;
-	int				key_d;
-	int				key_left;
-	int				key_right;
 	mlx_image_t		*minimap_buffer;
 	int				minimap_enabled;
 	double			prev_mouse_x;
@@ -121,8 +115,10 @@ int					is_empty_line(char *line);
 /* -----------raycast----------- */
 void				init_ray_data(t_ray *ray);
 void				init_player_state(t_player *player, t_map_config *config);
-void				draw_textured_walls(t_game *game, int x, int draw_start,
+void				draw_all(t_game *game, int x, int draw_start,
 						int draw_end);
+void				draw_textured_column(t_game *game, t_vector *param,
+						mlx_texture_t *texture, int draw_end);
 void				raycasting(t_game *game);
 void				player_movement(t_game *game, double frame_time);
 void				game_loop(void *param);

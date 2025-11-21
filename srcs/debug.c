@@ -92,9 +92,9 @@ void	debug_print_game_struct(t_game *game)
 	printf("    텍스처[WE]     : %p\n", (void *)game->textures[WEST]);
 	printf("    텍스처[EA]     : %p\n", (void *)game->textures[EAST]);
 	printf("    --- 키 상태 ---\n");
-	printf("      W: %d, A: %d, S: %d, D: %d\n", game->key_w, game->key_a,
-		game->key_s, game->key_d);
-	printf("      L: %d, R: %d\n", game->key_left, game->key_right);
+	// printf("      W: %d, A: %d, S: %d, D: %d\n", game->key_w, game->key_a,
+	// 	game->key_s, game->key_d);
+	// printf("      L: %d, R: %d\n", game->key_left, game->key_right);
 	printf("    --- 기타 ---\n");
 	printf("      미니맵 활성화  : %d\n", game->minimap_enabled);
 	printf("      이전 마우스 X  : %.3f\n", game->prev_mouse_x);

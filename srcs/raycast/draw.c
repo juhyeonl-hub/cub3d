@@ -12,22 +12,15 @@
 
 #include "cub3d.h"
 
-static int	get_texture_color(mlx_texture_t *texture, int x, int y)
+static t_vector	init_texture_param(mlx_texture_t *texture, int draw_start, int draw_end)
 {
-	int	index;
-	int	r;
-	int	g;
-	int	b;
-	int	a;
-
-	if (x < 0 || x >= (int)texture->width || y < 0 || y >= (int)texture->height)
-		return (0xFF000000);
-	index = (y * texture->width + x) * texture->bytes_per_pixel;
-	r = texture->pixels[index];
-	g = texture->pixels[index + 1];
-	b = texture->pixels[index + 2];
-	a = texture->pixels[index + 3];
-	return (r << 24 | g << 16 | b << 8 | a);
+	t_vector	param;
+	int			line_height;
+	
+	line_height = draw_end - draw_start;
+	param.x = (double)texture->height / (double)line_height;
+	param.y = (draw_start - WIN_HEIGHT / 2 + line_height / 2) * param.x;
+	return (param);
 }
 
 static mlx_texture_t	*select_wall_texture(t_game *game)
@@ -72,28 +65,16 @@ static void	draw_floor(t_game *game, int x, int draw_end)
 	}
 }
 
-void	draw_textured_walls(t_game *game, int x, int draw_start, int draw_end)
+void	draw_all(t_game *game, int x, int draw_start, int draw_end)
 {
-	int				y;
-	int				color;
-	int				line_height;
-	double			step;
-	double			tex_pos;
 	mlx_texture_t	*texture;
+	t_vector	param;
 
 	texture = select_wall_texture(game);
-	line_height = draw_end - draw_start;
-	step = (double)texture->height / (double)line_height;
-	tex_pos = (draw_start - WIN_HEIGHT / 2 + line_height / 2) * step;
+	param = init_texture_param(texture, draw_start, draw_end);
 	draw_ceiling(game, x, draw_start);
-	y = draw_start;
-	while (y < draw_end)
-	{
-		game->ray.tex_y = (int)tex_pos % texture->height;
-		tex_pos += step;
-		color = get_texture_color(texture, game->ray.tex_x, game->ray.tex_y);
-		mlx_put_pixel(game->screen_buffer, x, y, color);
-		y++;
-	}
+	game->ray.map_y = draw_start;
+	game->ray.map_x = x;
+	draw_textured_column(game, &param, texture, draw_end);
 	draw_floor(game, x, draw_end);
 }
