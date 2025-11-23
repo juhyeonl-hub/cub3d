@@ -12,6 +12,27 @@
 
 #include "cub3d.h"
 
+static int	check_and_resize(t_game *game)
+{
+	int	cur_width;
+	int	cur_height;
+
+	cur_width = game->mlx_ptr->width;
+	cur_height = game->mlx_ptr->height;
+	if (game->win_width != cur_width || game->win_height != cur_height)
+	{
+		game->win_width = cur_width;
+		game->win_height = cur_height;
+		mlx_delete_image(game->mlx_ptr, game->screen_buffer);
+		game->screen_buffer = mlx_new_image(game->mlx_ptr, cur_width, cur_height);
+		if (!game->screen_buffer)
+			return (1);
+		if (mlx_image_to_window(game->mlx_ptr, game->screen_buffer, 0, 0) < 0)
+			return (1);
+	}
+	return (0);
+}
+
 void	game_loop(void *param)
 {
 	t_game			*game;
@@ -31,5 +52,7 @@ void	game_loop(void *param)
 		return ;
 	}
 	player_movement(game, frame_time);
+	if (check_and_resize(game) != 0)
+		return ;
 	raycasting(game);
 }

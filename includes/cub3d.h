@@ -88,7 +88,8 @@ typedef struct s_game
 	mlx_texture_t	*textures[4];
 	mlx_image_t		*screen_buffer;
 	mlx_image_t		*minimap_buffer;
-	int				minimap_enabled;
+	int				win_width;
+	int				win_height;
 	double			prev_mouse_x;
 }	t_game;
 
@@ -123,7 +124,7 @@ void				raycasting(t_game *game);
 void				player_movement(t_game *game, double frame_time);
 void				game_loop(void *param);
 void				rotate_view(t_game *game, double rotation_speed, int dir);
-void				setup_ray(t_ray *ray, t_player *player, int x);
+void				setup_ray(t_game *game, t_ray *ray, t_player *player, int x);
 
 /* ------------common----------- */
 int					ft_perror(char *msg);

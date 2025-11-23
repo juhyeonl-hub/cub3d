@@ -69,9 +69,13 @@ static int	init_graphics(t_game *game)
 	game->mlx_ptr = mlx_init(WIN_WIDTH, WIN_HEIGHT, "cub3D", false);
 	if (!game->mlx_ptr)
 		return (ft_perror("Error: MLX initialization failed\n"));
+	game->win_width = WIN_WIDTH;
+	game->win_height = WIN_HEIGHT;
 	game->screen_buffer = mlx_new_image(game->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!game->screen_buffer)
 		return (ft_perror("Error: Failed to create screen buffer\n"));
+	if (mlx_image_to_window(game->mlx_ptr, game->screen_buffer, 0, 0) < 0)
+		return (ft_perror("Error: Failed to add image to window\n"));
 	if (load_textures(game) != 0)
 		return (1);
 	if (validate_texture_sizes(game) != 0)

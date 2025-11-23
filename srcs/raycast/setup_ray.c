@@ -38,11 +38,11 @@ static void	setup_xy_step(t_ray *ray, t_player *player)
 	}
 }
 
-void	setup_ray(t_ray *ray, t_player *player, int x)
+void	setup_ray(t_game *game, t_ray *ray, t_player *player, int x)
 {
 	double	camera_x;
 
-	camera_x = 2 * (double)x / (double)WIN_WIDTH - 1;
+	camera_x = 2 * (double)x / (double)game->win_width - 1;
 	ray->dir.x = player->dir.x + player->plane.x * camera_x;
 	ray->dir.y = player->dir.y + player->plane.y * camera_x;
 	ray->map_x = (int)player->pos.x;

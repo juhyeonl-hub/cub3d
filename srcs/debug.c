@@ -96,7 +96,7 @@ void	debug_print_game_struct(t_game *game)
 	// 	game->key_s, game->key_d);
 	// printf("      L: %d, R: %d\n", game->key_left, game->key_right);
 	printf("    --- 기타 ---\n");
-	printf("      미니맵 활성화  : %d\n", game->minimap_enabled);
+	// printf("      미니맵 활성화  : %d\n", game->minimap_enabled);
 	printf("      이전 마우스 X  : %.3f\n", game->prev_mouse_x);
 	debug_print_map_config(&game->config);
 	debug_print_player(&game->player);

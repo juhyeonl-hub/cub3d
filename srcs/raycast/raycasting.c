@@ -79,21 +79,20 @@ void	raycasting(t_game *game)
 	int	draw_end;
 
 	x = 0;
-	while (x < WIN_WIDTH)
+	while (x < game->win_width)
 	{
-		setup_ray(&game->ray, &game->player, x);
+		setup_ray(game, &game->ray, &game->player, x);
 		run_dda(&game->ray, &game->config);
 		get_wall_dist(&game->ray, &game->player);
-		line_height = (int)(WIN_HEIGHT / game->ray.perp_wall_dist);
-		draw_start = -line_height / 2 + WIN_HEIGHT / 2;
-		draw_end = line_height / 2 + WIN_HEIGHT / 2;
+		line_height = (int)(game->win_height / game->ray.perp_wall_dist);
+		draw_start = -line_height / 2 + game->win_height / 2;
+		draw_end = line_height / 2 + game->win_height / 2;
 		if (draw_start < 0)
 			draw_start = 0;
-		if (draw_end >= WIN_HEIGHT)
-			draw_end = WIN_HEIGHT - 1;
+		if (draw_end >= game->win_height)
+			draw_end = game->win_height - 1;
 		get_texture_x(game, &game->ray, &game->player);
 		draw_all(game, x, draw_start, draw_end);
 		x++;
 	}
-	mlx_image_to_window(game->mlx_ptr, game->screen_buffer, 0, 0);
 }

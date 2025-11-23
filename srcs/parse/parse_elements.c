@@ -20,6 +20,7 @@ static int	process_config_line(char *line, t_game *game)
 	parts = ft_split(line, ' ');
 	if (!parts)
 		return (1);
+		
 	if (!parts[0])
 		res = 0;
 	else if (!ft_strncmp(parts[0], "NO", 3) || !ft_strncmp(parts[0], "SO", 3)
