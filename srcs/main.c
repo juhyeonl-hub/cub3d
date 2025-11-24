@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 12:24:51 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/19 16:09:40 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:45:08 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	validate_texture_sizes(t_game *game)
 
 static int	init_graphics(t_game *game)
 {
-	game->mlx_ptr = mlx_init(WIN_WIDTH, WIN_HEIGHT, "cub3D", false);
+	game->mlx_ptr = mlx_init(WIN_WIDTH, WIN_HEIGHT, "cub3D", true);
 	if (!game->mlx_ptr)
 		return (ft_perror("Error: MLX initialization failed\n"));
 	game->win_width = WIN_WIDTH;

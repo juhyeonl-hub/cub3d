@@ -1,103 +1,70 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/10/22 12:15:10 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/11/19 14:16:01 by juhyeonl         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME        = cub3d
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -g
+RM          = rm -rf
 
-NAME = cub3d
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-RM = rm -f
+SRCS_DIR    = srcs
+OBJS_DIR    = objs
+INCS_DIR    = includes
 
-# --- 디렉토리 경로 ---
-SRCS_DIR = srcs
-OBJS_DIR = objs
-INCS_DIR = includes
+LIBFT_DIR   = libft
+LIBFT_URL   = git@github.com:Hive-juhyeonl/libft.git
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-# --- 라이브러리: libft ---
-LIBFT_DIR = libft
-LIBFT_URL = git@github.com:Hive-juhyeonl/libft.git
-LIBFT_LIB = $(LIBFT_DIR)/libft.a
+MLX_DIR     = MLX42
+MLX_URL     = https://github.com/codam-coding-college/MLX42.git
+MLX_BUILD   = $(MLX_DIR)/build
+MLX         = $(MLX_BUILD)/libmlx42.a
 
-# --- 라이브러리: MLX42 ---
-MLX_DIR = MLX42
-MLX_URL = https://github.com/codam-coding-college/MLX42.git
-MLX_BUILD_DIR = $(MLX_DIR)/build
-MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
+SRC_FILES   =	main.c \
+				utils.c \
+				parse/parse.c \
+				parse/parse_elements.c \
+				parse/parse_map.c \
+				parse/parse_utils.c \
+				parse/validate_config.c \
+				raycast/draw.c \
+				raycast/draw_utils.c \
+				raycast/game_loop.c \
+				raycast/movement.c \
+				raycast/ray_utils.c \
+				raycast/raycasting.c \
+				raycast/setup_ray.c
 
-# --- 인클루드 및 라이브러리 플래그 ---
-INCLUDES = -I$(INCS_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)/include
-# --- *** FIX: Added -lXpm to force linking *** ---
-LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42 -ldl -lglfw -lpthread -lm
+SRCS        = $(addprefix $(SRCS_DIR)/, $(SRC_FILES))
+OBJS        = $(addprefix $(OBJS_DIR)/, $(SRC_FILES:.c=.o))
 
-# --- 소스 파일 ---
-SRCS_FILES = $(shell find $(SRCS_DIR) -name "*.c")
-
-OBJS = $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS_FILES:.c=.o)))
-VPATH = $(sort $(dir $(SRCS_FILES))) # VPATH에 모든 소스 디렉토리 추가
-
-.PHONY: all clean fclean re bonus
+INCS        = -I$(INCS_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)/include
+LIBS        = $(LIBFT) $(MLX) -ldl -lglfw -lpthread -lm
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS) $(INCLUDES)
-	@echo "✅ cub3d compiled successfully!"
+$(NAME): $(LIBFT) $(MLX) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 
-# --- 라이브러리 빌드 규칙 ---
-$(LIBFT_LIB):
-	@if [ ! -d "$(LIBFT_DIR)" ]; then \
-		echo "Downloading libft..."; \
-		git clone --quiet $(LIBFT_URL) $(LIBFT_DIR); \
-	fi
-	@if [ ! -f "$(LIBFT_LIB)" ]; then \
-		echo "Building libft..."; \
-		$(MAKE) --no-print-directory -C $(LIBFT_DIR); \
-	else \
-		@echo "libft is already built."; \
-	fi
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
-$(MLX_LIB):
-	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo "Downloading MLX42..."; \
-		git clone --quiet $(MLX_URL) $(MLX_DIR); \
-	fi
-	@if [ ! -f "$(MLX_LIB)" ]; then \
-		echo "Building MLX42..."; \
-		cmake -S $(MLX_DIR) -B $(MLX_BUILD_DIR); \
-		$(MAKE) --no-print-directory --quiet -C $(MLX_BUILD_DIR) -j4; \
-	else \
-		@echo "MLX42 is already built."; \
-	fi
+$(LIBFT):
+	@if [ ! -d "$(LIBFT_DIR)" ]; then git clone $(LIBFT_URL) $(LIBFT_DIR); fi
+	@make -C $(LIBFT_DIR)
 
-# --- 오브젝트 파일 빌드 규칙 ---
-$(OBJS_DIR):
-	@mkdir -p $(OBJS_DIR)
+$(MLX):
+	@if [ ! -d "$(MLX_DIR)" ]; then git clone $(MLX_URL) $(MLX_DIR); fi
+	@cmake -S $(MLX_DIR) -B $(MLX_BUILD)
+	@make -C $(MLX_BUILD) -j4
 
-$(OBJS_DIR)/%.o: %.c $(LIBFT_LIB) $(MLX_LIB) | $(OBJS_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-# --- 정리 규칙 (수정됨) ---
 clean:
-	@$(RM) -r $(OBJS_DIR)
-	@if [ -f "$(LIBFT_DIR)/Makefile" ]; then \
-		$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean; \
-	fi
-	@if [ -d "$(MLX_BUILD_DIR)" ]; then $(RM) -r $(MLX_BUILD_DIR); fi
-	@echo "✅ Objects removed."
+	$(RM) $(OBJS_DIR)
+	@if [ -d "$(LIBFT_DIR)" ]; then make -C $(LIBFT_DIR) clean; fi
+	@rm -rf $(MLX_BUILD)
 
-fclean:
-	@$(RM) -r $(OBJS_DIR)
-	@$(RM) $(NAME)
-	@echo "🧹 Removing cloned repositories..."
-	@if [ -d "$(LIBFT_DIR)" ]; then $(RM) -r $(LIBFT_DIR); fi
-	@if [ -d "$(MLX_DIR)" ]; then $(RM) -r $(MLX_DIR); fi
-	@echo "✅ Executable and cloned libraries removed."
+fclean: clean
+	$(RM) $(NAME)
+	@rm -rf $(LIBFT_DIR)
+	@rm -rf $(MLX_DIR)
 
 re: fclean all
+
+.PHONY: all clean fclean re

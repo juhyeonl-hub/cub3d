@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:58:55 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/19 14:41:04 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/24 14:01:43 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	validate_map_chars(t_map_config *config)
 		while (config->map_grid[y][x])
 		{
 			if (!ft_strchr("01 ", config->map_grid[y][x]))
-				return (ft_perror("Error: Invalid character in map\n"));
+				return (ft_perror("Error: Invalid map\n"));
 			x++;
 		}
 		if (x == 0 && y != config->map_height - 1)

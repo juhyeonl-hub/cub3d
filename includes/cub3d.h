@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 23:06:44 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/11/24 13:08:18 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/11/24 14:00:59 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define WIN_WIDTH 1024
 # define WIN_HEIGHT 768
 # define MINIMAP_SCALE 0.2
-# define ERRMSG_FINDPLAYER "Error: Multiple players found in map\n"
+# define ERRMSG_FINDPLAYER "Error: Invalid map\n"
 # define ERRMSG_NOT_ENOUGH_ARG "Error: Invalid args\nUsage: ./cub3d <map.cub>\n"
 
 // game->textures[NORTH] == game->textures[0]
