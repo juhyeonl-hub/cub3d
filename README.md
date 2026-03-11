@@ -147,9 +147,3 @@ The map can have irregular shapes and spaces. A flood fill starting from each `0
 
 ### 4. Texture Coordinate Mapping
 When a ray hits a wall, the exact x-coordinate on the texture depends on **which face** was hit (N/S vs E/W) and where along that face the ray landed. Getting this wrong produces stretched or misaligned textures — subtle bugs that required careful debugging with known test maps.
-
----
-
-## License
-
-This project was developed as part of the 42 curriculum at Hive Helsinki.
