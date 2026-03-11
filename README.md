@@ -5,7 +5,7 @@
 ![Type](https://img.shields.io/badge/Type-Graphics-red)
 ![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-A raycasting engine inspired by **Wolfenstein 3D**, built as a team project at [Hive Helsinki](https://www.hive.fi/) (42 Network). Renders a 2D map into a 3D first-person perspective using the **DDA algorithm** and the MiniLibX graphics library.
+A raycasting program inspired by **Wolfenstein 3D**, built as a team project at [Hive Helsinki](https://www.hive.fi/) (42 Network). Renders a 2D map into a 3D first-person perspective using the **DDA algorithm** and the MiniLibX graphics library.
 
 ---
 
